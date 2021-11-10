@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {Link, useHistory} from 'react-router-dom'
+import {appContext} from '../Context';
 
 const UserSignIn = () => {
 
   //setting email and password states//
   let [email, setEmail] = useState('');
   let [password, setPassword] = useState('');
+  const {actions} = useContext(appContext);
 
   //using history hook to be used when clicking cancel button//
   const history = useHistory();
@@ -18,14 +20,11 @@ const UserSignIn = () => {
       setPassword(e.target.value)
     }
   }
-
   //handles form submission//
   function handleSubmit(e) {
     e.preventDefault(); //<-- need to remove this eventually
-    console.log(email);
-    console.log(password);
+    actions.signIn(email, password)
   }
-
   //Redirects user to home route when clicking cancel//
   function routeChange() {
     history.push('/');
@@ -35,14 +34,14 @@ const UserSignIn = () => {
     <div className="form--centered">
         <h2>Sign In</h2>
 
-        <form>
+        <form onSubmit={handleSubmit}>
             <label for="emailAddress">Email Address</label>
             <input onChange={handleChange} id="emailAddress" name="emailAddress" type="email" value={email}/>
 
             <label for="password">Password</label>
             <input onChange={handleChange} id="password" name="password" type="password" value={password}/>
 
-            <button className="button" type="submit" onClick={handleSubmit}>Sign In</button>
+            <button className="button" type="submit" >Sign In</button>
             <button className="button button-secondary" onClick={routeChange}>Cancel</button>
         </form>
 

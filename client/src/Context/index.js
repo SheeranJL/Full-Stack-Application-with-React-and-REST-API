@@ -6,6 +6,8 @@ export const appContext = React.createContext();
 
 export const Provider = (props) => {
 
+  const [authUser, setAuthUser] = useState('');
+
   const api = (path, method = 'GET', body = null, requiresAuth = false, credentials = null) => {
     const url = appSettings.apiBaseUrl + path;
     const options = {
@@ -30,16 +32,35 @@ export const Provider = (props) => {
     return response;
   }
 
-  const getCourse = async (id) => {
+  const getCourse = async(id) => {
     const response = await api(`/courses/${id}`)
     return response;
+  }
+
+  const getUser = async(username, password) => {
+    const response = api('/users', 'GET', null, true, {username, password})
+    return response;
+  }
+
+  const signIn = async(username, password) => {
+    let user;
+    const response = getUser(username, password);
+    if (response.status === 200) {
+      console.log('yes')
+    } else {
+      console.log('no')
+    }
   }
 
 
 
 
   return (
-    <appContext.Provider value={ { actions: { getCourses, getCourse } } }>
+    <appContext.Provider value={ { actions: {
+       getCourses,
+       getCourse,
+       signIn,
+     }}}>
       {props.children}
     </appContext.Provider>
   );

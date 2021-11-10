@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {appContext} from '../Context';
+import {Link} from 'react-router-dom';
 import CourseComponent from './DetailCourse';
 
 const CourseDetail = (props) => {
@@ -9,7 +10,6 @@ const CourseDetail = (props) => {
   let [materials, setMaterials] = useState([])
 
   const {actions} = useContext(appContext)
-  // let id = props.history.match.params.id;
   let id = props.match.params.id
   let materialsList = [];
 
@@ -34,17 +34,23 @@ const CourseDetail = (props) => {
   splitString(course.materialsNeeded)
 
 
-
-
   return (
 
     <div className="wrap">
-        <h2>Course Detail</h2>
-        <form>
           {
             loading
               ? <h1>Loading...</h1>
-              : <div className="main--flex">
+              : (
+                <form>
+                <div class="actions--bar">
+                    <div class="wrap">
+                        <Link class="button" to={`/courses/${course.id}/update`}>Update Course</Link>
+                        <a class="button" href="#">Delete Course</a>
+                        <Link class="button button-secondary" to={'/'}>Return to List</Link>
+                    </div>
+                </div>
+                <h2>Course Detail</h2>
+                <div className="main--flex">
                   <div>
                       <h3 className="course--detail--title">Course</h3>
                       <h4 className="course--name">{course.title}</h4>
@@ -64,8 +70,9 @@ const CourseDetail = (props) => {
                       </ul>
                   </div>
               </div>
+              </form>
+            )
           }
-        </form>
     </div>
 
   )
