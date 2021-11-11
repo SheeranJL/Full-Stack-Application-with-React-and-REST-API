@@ -7,6 +7,8 @@ const UserSignIn = () => {
   //setting email and password states//
   let [email, setEmail] = useState('');
   let [password, setPassword] = useState('');
+  let [fail, setFail] = useState(false);
+  let [attempts, setAttempts] = useState(5)
   const {actions} = useContext(appContext);
 
   //using history hook to be used when clicking cancel button//
@@ -20,10 +22,24 @@ const UserSignIn = () => {
       setPassword(e.target.value)
     }
   }
+
+
   //handles form submission//
   function handleSubmit(e) {
-    e.preventDefault(); //<-- need to remove this eventually
+    e.preventDefault();
     actions.signIn(email, password)
+      .then(response => {
+        if (response.status === 200) {
+          console.log(response);
+          setFail(false);
+          console.log(`Success. ${email} is now logged in`)
+          history.push('/authenticated');
+        } else {
+          console.log('fail')
+          setFail(true);
+        }
+      })
+      .catch(err => console.log(err))
   }
   //Redirects user to home route when clicking cancel//
   function routeChange() {
@@ -32,8 +48,21 @@ const UserSignIn = () => {
 
   return (
     <div className="form--centered">
-        <h2>Sign In</h2>
 
+        {
+          fail
+          ?  (
+
+              <div className="validation--errors">
+              <p>Incorrect login, try again.</p>
+              </div>
+
+          )
+          : <></>
+
+        }
+
+        <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
             <label for="emailAddress">Email Address</label>
             <input onChange={handleChange} id="emailAddress" name="emailAddress" type="email" value={email}/>
@@ -44,7 +73,6 @@ const UserSignIn = () => {
             <button className="button" type="submit" >Sign In</button>
             <button className="button button-secondary" onClick={routeChange}>Cancel</button>
         </form>
-
         <Link to="/signup">Don't have a user account? Click here to sign up </Link>
     </div>
   )

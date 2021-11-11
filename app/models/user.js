@@ -65,7 +65,7 @@ module.exports = (sequelize) => {
         },
         len: {
           args: [8, 20],
-          msg: 'The password must be between 8 and 20 characters in length'
+          msg: 'Your password must be between 8 and 20 characters in length'
         },
 
         //The code below uses a setter to set the value of the password entry to a hashed value, rather than plain text.

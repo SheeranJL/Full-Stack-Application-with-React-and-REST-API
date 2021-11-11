@@ -42,11 +42,11 @@ const CourseDetail = (props) => {
               ? <h1>Loading...</h1>
               : (
                 <form>
-                <div class="actions--bar">
-                    <div class="wrap">
-                        <Link class="button" to={`/courses/${course.id}/update`}>Update Course</Link>
-                        <a class="button" href="#">Delete Course</a>
-                        <Link class="button button-secondary" to={'/'}>Return to List</Link>
+                <div className="actions--bar">
+                    <div className="wrap">
+                        <Link className="button" to={`/courses/${course.id}/update`}>Update Course</Link>
+                        <a className="button" href="#">Delete Course</a>
+                        <Link className="button button-secondary" to={'/'}>Return to List</Link>
                     </div>
                 </div>
                 <h2>Course Detail</h2>
