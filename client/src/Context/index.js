@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-
 import {appSettings} from '../config';
 
 export const appContext = React.createContext();
@@ -47,15 +46,30 @@ export const Provider = (props) => {
     return response;
   }
 
+  //Post a new course//
+  const createCourse = async(course, username, password) => {
+    const response = api('/courses', 'POST', course, true, {username, password})
+    return response;
+  };
+
+  const updateCourse = async(id, body, username, password) => {
+    api(`/courses/${id}`, 'PUT', body, true, {username, password} )
+  }
 
 
   //Sign in function//
   const signIn = async(username, password) => {
-    const user = await getUser(username, password);
-    if (user !== null) {
-      setAuthUser(username)
+    let user;
+    const response = await getUser(username, password);
+    if (response.status === 200) {
+      await response.json()
+        .then(data => {
+          user = data
+          user.password = password
+          setAuthUser(user);
+        })
     }
-    return user;
+    return response;
   }
 
   //Sign up function//
@@ -64,6 +78,16 @@ export const Provider = (props) => {
     return response;
   }
 
+  //Sign Out function
+  const signOut = () => {
+    setAuthUser(null);
+
+  };
+
+  //Delete course//
+  const deleteCourse = (id, username, password) => {
+    api(`/courses/${id}`, 'DELETE', null, true, {username, password} )
+  };
 
 
   return (
@@ -72,7 +96,12 @@ export const Provider = (props) => {
        getCourse,
        signIn,
        signUp,
-       authUser
+       signOut,
+       authUser,
+       getUser,
+       deleteCourse,
+       createCourse,
+       updateCourse
      }}}>
       {props.children}
     </appContext.Provider>

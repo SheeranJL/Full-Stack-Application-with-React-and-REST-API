@@ -24,23 +24,17 @@ const UserSignIn = () => {
   }
 
 
-  //handles form submission//
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    actions.signIn(email, password)
-      .then(response => {
-        if (response.status === 200) {
-          console.log(response);
-          setFail(false);
-          console.log(`Success. ${email} is now logged in`)
-          history.push('/authenticated');
-        } else {
-          console.log('fail')
-          setFail(true);
-        }
-      })
-      .catch(err => console.log(err))
+    const response = await actions.signIn(email, password);
+    if (response.status !== 200) {
+      setFail(true);
+    } else {
+      history.push('/')
+    }
   }
+
+
   //Redirects user to home route when clicking cancel//
   function routeChange() {
     history.push('/');
@@ -64,10 +58,10 @@ const UserSignIn = () => {
 
         <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
-            <label for="emailAddress">Email Address</label>
+            <label htmlFor="emailAddress">Email Address</label>
             <input onChange={handleChange} id="emailAddress" name="emailAddress" type="email" value={email}/>
 
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input onChange={handleChange} id="password" name="password" type="password" value={password}/>
 
             <button className="button" type="submit" >Sign In</button>

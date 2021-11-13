@@ -14,30 +14,30 @@ import NotFound from './components/NotFound';
 import MainPage from './components/MainPage';
 import ErrorPage from './components/Error';
 import Authenticated from './components/Authenticated';
-
+import PrivateRoute from './PrivateRoute';
 
 export default () => (
 
   <Router>
-  <body>
+
     <div id="root">
       <Header />
       <main>
         <Switch>
           <Route exact path="/" component={MainPage} />
           <Route exact path="/course" component={Course} />
-          <Route path="/authenticated" component={Authenticated} />
-          <Route path="/courses/create" component={CreateCourse} />
-          <Route path="/courses/:id/update" component={UpdateCourse} />
+          <PrivateRoute path="/authenticated" component={Authenticated} />
+          <PrivateRoute path="/courses/create" component={CreateCourse} />
+          <PrivateRoute path="/courses/:id/update" component={UpdateCourse} />
           <Route path="/courses/:id" component={CourseDetail} />
           <Route path="/signin" component={UserSignIn} />
           <Route path="/signup" component={UserSignUp} />
           <Route path="/error" component={ErrorPage} />
           <Route component={NotFound} />
-          </Switch>
+        </Switch>
       </main>
     </div>
-  </body>
+
   </Router>
 
 

@@ -1,9 +1,11 @@
 import React, {useContext} from 'react';
-import {useHistory} from 'react-router-dom';
 import {appContext} from '../Context';
+import {useHistory} from 'react-router-dom';
 
 const Authenticated = () => {
 
+  const {actions} = useContext(appContext);
+  const user = actions.authUser.firstName;
   const history = useHistory();
 
   function routeChange() {
@@ -13,9 +15,9 @@ const Authenticated = () => {
 
   return (
     <main>
-        <div class="wrap">
+        <div className="wrap">
             <h2>Login success</h2>
-            <p>Welcome</p>
+            <p>Welcome, {user}</p>
             <button className="button button-secondary" onClick={routeChange}>Home</button>
         </div>
     </main>

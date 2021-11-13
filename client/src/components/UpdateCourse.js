@@ -4,33 +4,80 @@ import {Link, useHistory} from 'react-router-dom';
 
 const UpdateCourse = (props) => {
 
-
-  const [course, setCourse] = useState([]);
+  let identifier = props.match.params.id;
+  const [course, setCourse] = useState({});
   const [loading, setLoading] = useState(true);
   const {actions} = useContext(appContext);
-  let id = props.match.params.id;
+  const user = actions.authUser;
 
-  useEffect( () => {
-    const getCourse = async () => {
-      await actions.getCourse(id)
-        .then(response => response.json())
-        .then(data => setCourse(data.course))
-        if (course) {
-          setLoading(false);
-        }
-      }
-    getCourse();
-  }, [])
-
+  const [id, setId] = useState(null);
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [time, setTime] = useState('');
+  const [materials, setMaterials] = useState('');
 
   const history = useHistory();
   const routeChange = () => {
-    history.push(`/courses/${course.id}`);
+    history.push(`/courses/${id}`);
+  }
+
+  useEffect( () => {
+    const getCourse = async () => {
+      await actions.getCourse(identifier)
+        .then(response => {
+          if (response.status === 200) {
+            response.json()
+              .then(data => {
+                setCourse(data.course)
+                return data.course;
+              })
+              .then((course) => {
+                setTitle(course.title);
+                setDesc(course.description);
+                setTime(course.estimatedTime);
+                setMaterials(course.materialsNeeded);
+                setId(course.id);
+                return course;
+              })
+              .then(setLoading(false))
+          } else {
+            history.push('/error')
+          }
+        }
+      )
+      }
+      getCourse();
+  }, [])
+
+  const onChange = (e) => {
+    e.preventDefault();
+    if (e.target.name === 'courseTitle') {
+      setTitle(e.target.value);
+    } else if (e.target.name === 'courseDescription') {
+      setDesc(e.target.value);
+    } else if (e.target.name === 'estimatedTime') {
+      setTime(e.target.value);
+    } else if (e.target.name === 'materialsNeeded') {
+      setMaterials(e.target.value);
+    }
+  }
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    let body = {
+      title: title,
+      description: desc,
+      estimatedTime: time,
+      materialsNeeded: materials
+    };
+    await actions.updateCourse(identifier, body, actions.authUser.emailAddress, actions.authUser.password)
+    setTimeout(() => {
+      history.push(`/courses/${identifier}`)
+    }, 500);
   }
 
 
   return (
-
     <main>
     {
       loading
@@ -38,23 +85,23 @@ const UpdateCourse = (props) => {
       : (
         <div className="wrap">
           <h2>Update Course</h2>
-          <form>
+          <form onSubmit={handleSubmit}>
               <div className="main--flex">
                   <div>
                       <label for="courseTitle">Course Title</label>
-                      <input id="courseTitle" name="courseTitle" type="text" value={`${course.title}`} />
+                      <input onChange={onChange} id="courseTitle" name="courseTitle" type="text" value={title} />
 
-                      <p>{`By ${course.Enrolled.firstName} ${course.Enrolled.lastName}`}</p>
+                      <p></p>
 
                       <label for="courseDescription">Course Description</label>
-                      <textarea id="courseDescription" name="courseDescription">{`${course.description}`}</textarea>
+                      <textarea onChange={onChange} id="courseDescription" name="courseDescription" value={desc}></textarea>
                   </div>
                   <div>
                       <label for="estimatedTime">Estimated Time</label>
-                      <input id="estimatedTime" name="estimatedTime" type="text" value={`${course.estimatedTime}`} />
+                      <input onChange={onChange} id="estimatedTime" name="estimatedTime" type="text" value={time} />
 
                       <label for="materialsNeeded">Materials Needed</label>
-                      <textarea id="materialsNeeded" name="materialsNeeded">{`${course.materialsNeeded}`}</textarea>
+                      <textarea onChange={onChange} id="materialsNeeded" name="materialsNeeded" value={materials}></textarea>
                   </div>
               </div>
               <button className="button" type="submit">Update Course</button>
@@ -65,8 +112,6 @@ const UpdateCourse = (props) => {
     }
     </main>
   )
-
-
 
 
 }

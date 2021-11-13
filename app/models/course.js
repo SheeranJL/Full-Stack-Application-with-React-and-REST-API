@@ -21,7 +21,7 @@ module.exports = (sequelize) => {
           msg: 'Please enter a title'
         },
         notEmpty: {
-          msg: 'please provide a title'
+          msg: 'Please provide a title'
         },
       }
     },

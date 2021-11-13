@@ -12,6 +12,7 @@ const UserSignUp = () => {
   let [errors, setErrors] = useState([]);
 
   const {actions} = useContext(appContext);
+  const history = useHistory();
 
   function handleChange(e) {
     if (e.target.name === 'firstName') {
@@ -38,7 +39,7 @@ const UserSignUp = () => {
     actions.signUp(user)
       .then(response => {
         if (response.status === 201) {
-          console.log('success')
+          history.push('/');
         } else if (response.status === 400) {
           response.json().then(data => setErrors([data]))
         } else {
@@ -48,12 +49,10 @@ const UserSignUp = () => {
       .catch(error => console.log(error))
   }
 
-  const history = useHistory()
+
   function routeChange() {
     history.push('/')
   }
-
-  console.log(errors);
 
   return (
     <div className="form--centered">
@@ -67,16 +66,16 @@ const UserSignUp = () => {
 
 
         <form onSubmit={handleSubmit}>
-            <label for="firstName">First Name</label>
+            <label htmlFor="firstName">First Name</label>
             <input onChange={handleChange} id="firstName" name="firstName" type="text" value={firstName} />
 
-            <label for="lastName">Last Name</label>
+            <label htmlFor="lastName">Last Name</label>
             <input onChange={handleChange} id="lastName" name="lastName" type="text" value={lastName} />
 
-            <label for="emailAddress">Email Address</label>
+            <label htmlFor="emailAddress">Email Address</label>
             <input onChange={handleChange} id="emailAddress" name="emailAddress" type="email" value={email} />
 
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input onChange={handleChange} id="password" name="password" type="password" value={password} />
 
             <button className="button" type="submit">Sign Up</button>

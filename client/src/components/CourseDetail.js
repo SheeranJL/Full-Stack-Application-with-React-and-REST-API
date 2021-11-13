@@ -1,15 +1,18 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {appContext} from '../Context';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import CourseComponent from './DetailCourse';
+import AdminButtons from './AdminButtons';
 
 const CourseDetail = (props) => {
 
   let [course, setCourse] = useState([]);
   let [loading, setLoading] = useState(true);
-  let [materials, setMaterials] = useState([])
+  let [materials, setMaterials] = useState([]);
+  let [user, setUser] = ('');
+  const {actions, authUser} = useContext(appContext)
+  const history = useHistory();
 
-  const {actions} = useContext(appContext)
   let id = props.match.params.id
   let materialsList = [];
 
@@ -18,10 +21,30 @@ const CourseDetail = (props) => {
       await actions.getCourse(id)
         .then(response => response.json())
         .then(data => setCourse(data.course))
-        .finally(setLoading(false))
+        .finally(() => setLoading(false))
     }
     getCourse();
   }, []);
+
+
+  //Function to check whether the course ID is the same as the user ID therefore granting conditional access to admin buttons//
+  function checkAuthUser() {
+    try {
+    if (actions.authUser) {
+      if (actions.authUser.id === course.Enrolled.id) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log('TEST')
+    return false;
+  }
+}
+
 
   async function splitString(string) {
     if (course.materialsNeeded) {
@@ -34,22 +57,36 @@ const CourseDetail = (props) => {
   splitString(course.materialsNeeded)
 
 
-  return (
+  //Delete course function//
+  const deleteCourse = async() => {
+    await actions.deleteCourse(id, actions.authUser.emailAddress, actions.authUser.password)
+    setTimeout(() => {
+      history.push('/');
+    }, 500);
+  };
 
+
+  return (
     <div className="wrap">
           {
             loading
               ? <h1>Loading...</h1>
               : (
-                <form>
-                <div className="actions--bar">
-                    <div className="wrap">
-                        <Link className="button" to={`/courses/${course.id}/update`}>Update Course</Link>
-                        <a className="button" href="#">Delete Course</a>
+              <form>
+                  <div className="actions--bar">
+                      <div className="wrap">
+                    {
+                      (checkAuthUser()) ?
+                        <>
+                        <AdminButtons deleteCourse={deleteCourse} data={course}/>
+                        </>
+                        : null
+                    }
                         <Link className="button button-secondary" to={'/'}>Return to List</Link>
-                    </div>
-                </div>
+                      </div>
+                  </div>
                 <h2>Course Detail</h2>
+                <p>By {course.Enrolled.firstName} {course.Enrolled.lastName}</p>
                 <div className="main--flex">
                   <div>
                       <h3 className="course--detail--title">Course</h3>
@@ -61,7 +98,6 @@ const CourseDetail = (props) => {
                   <div>
                       <h3 className="course--detail--title">Estimated Time</h3>
                       <p>{course.estimatedTime || 'No time provided'}</p>
-
                       <h3 className="course--detail--title">Materials Needed</h3>
                       <ul className="course--detail--list">
                           {materialsList.map((item, index) => (
@@ -70,11 +106,10 @@ const CourseDetail = (props) => {
                       </ul>
                   </div>
               </div>
-              </form>
+            </form>
             )
           }
     </div>
-
   )
 }
 

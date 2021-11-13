@@ -80,6 +80,8 @@ router.post('/courses', authenticateUser, asyncHandler(async (req, res) => {
     const course = await Course.create({
       title: req.body.title,
       description: req.body.description,
+      estimatedTime: req.body.estimatedTime,
+      materialsNeeded: req.body.materialsNeeded,
       userId: req.currentUser.id
     });
     res.status(201).location(`/courses/${course.id}`).end();                 //<-- Once created, send a 201 success response and direct URL to the new course
