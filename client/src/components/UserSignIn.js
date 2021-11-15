@@ -23,7 +23,8 @@ const UserSignIn = () => {
     }
   }
 
-
+  //Upon submit, we will authenticate the user using the values provided in the login form//
+  //If authentication is successful, we will redirect the user to the home page, otherwise we will display an 'incorrect login' message//
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await actions.signIn(email, password);
@@ -42,18 +43,14 @@ const UserSignIn = () => {
 
   return (
     <div className="form--centered">
-
         {
           fail
           ?  (
-
               <div className="validation--errors">
               <p>Incorrect login, try again.</p>
               </div>
-
           )
           : <></>
-
         }
 
         <h2>Sign In</h2>

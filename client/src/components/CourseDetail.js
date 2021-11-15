@@ -7,10 +7,13 @@ import ReactMarkdown from 'react-markdown';
 
 const CourseDetail = (props) => {
 
+  //Setting local context//
   let [course, setCourse] = useState([]);
   let [loading, setLoading] = useState(true);
   let [materials, setMaterials] = useState([]);
   let [user, setUser] = ('');
+
+  //obtaining functions from app context//
   const {actions, authUser} = useContext(appContext)
   const history = useHistory();
 
@@ -55,6 +58,8 @@ const CourseDetail = (props) => {
 
 
   //Delete course function//
+  //Calls the DeleteCourse function in context, which calls the DELETE api//
+  //Returns user to home page after creation of new course//
   const deleteCourse = async() => {
     await actions.deleteCourse(id, actions.authUser.emailAddress, actions.authUser.password)
     setTimeout(() => {

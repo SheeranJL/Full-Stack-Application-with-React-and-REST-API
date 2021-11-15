@@ -1,4 +1,4 @@
-import React from 'react';
+//Not Found component//
 import {Link, useHistory} from 'react-router-dom';
 
 const NotFound = () => {

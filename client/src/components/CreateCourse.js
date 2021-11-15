@@ -5,12 +5,14 @@ import ValidationError from './ValidationError';
 
 const CreateCourse = () => {
 
+  //setting up local context//
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [time, setTime] = useState('');
   const [materials, setMaterials] = useState('');
   const [errors, setErrors] = useState([]);
 
+  //obtaining functions from app context//
   const {actions} = useContext(appContext);
 
   const history = useHistory();
@@ -18,6 +20,7 @@ const CreateCourse = () => {
     history.push('/')
   }
 
+  //This code will update all respective local context as a user inputs text into fields//
   const handleChange = (e) => {
     if (e.target.name === 'courseTitle') {
       setTitle(e.target.value)
@@ -30,6 +33,8 @@ const CreateCourse = () => {
     }
   }
 
+  //This code will run when the form submits, it will call the createCourse API from app context//
+  //After creation of a new course, it will then return the user to the home screen//
   const handleSubmit = async(e) => {
     e.preventDefault();
     let body = {

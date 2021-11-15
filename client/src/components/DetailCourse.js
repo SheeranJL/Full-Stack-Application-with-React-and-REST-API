@@ -1,4 +1,4 @@
-
+//Course Detail component//
 const CourseComponent = (props) => {
 
 console.log(props);
