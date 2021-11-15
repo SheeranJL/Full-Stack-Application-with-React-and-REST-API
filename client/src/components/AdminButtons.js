@@ -1,8 +1,7 @@
-import React from 'react';
+// Admin buttons for Update and Delete //
 import {Link} from 'react-router-dom';
 
 const AdminButtons = (props) => {
-
   return (
     <>
     <Link className="button" to={`/courses/${props.data.id}/update`}>Update Course</Link>

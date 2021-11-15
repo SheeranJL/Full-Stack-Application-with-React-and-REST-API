@@ -122,7 +122,7 @@ router.put('/courses/:id', authenticateUser, asyncHandler(async (req, res) => {
                   }
                 }
     } else {
-      res.status(400).json({message: "please enter a title and a description"})
+      res.status(400).json({message: "Please provide both a 'title' and a 'description'."})
     }
   } else {
     res.status(404).json({message: 'Course not found - cannot update'})
@@ -158,8 +158,6 @@ router.delete('/users/:id', authenticateUser, asyncHandler(async (req, res) => {
     res.status(404).json({message : 'Cannot find user'})
   }
 }))
-
-
 
 
 module.exports = router;  //<-- Exporting routes to be used in app.js

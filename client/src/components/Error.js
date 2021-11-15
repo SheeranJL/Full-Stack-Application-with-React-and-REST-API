@@ -1,4 +1,4 @@
-import React from 'react';
+//Error Page component//
 import {useHistory} from 'react-router-dom';
 
 const ErrorPage = () => {

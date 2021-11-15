@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import {appSettings} from '../config';
+import Cookies from 'js-cookie';
 
 export const appContext = React.createContext();
 
 export const Provider = (props) => {
+  let cookie = Cookies.get('authenticatedUser');
 
-  const [authUser, setAuthUser] = useState(null);
+  const [authUser, setAuthUser] = useState(cookie ? JSON.parse(cookie) : null);
 
   const api = (path, method = 'GET', body = null, requiresAuth = false, credentials = null) => {
     const url = appSettings.apiBaseUrl + path;
@@ -53,7 +55,8 @@ export const Provider = (props) => {
   };
 
   const updateCourse = async(id, body, username, password) => {
-    api(`/courses/${id}`, 'PUT', body, true, {username, password} )
+    const response = api(`/courses/${id}`, 'PUT', body, true, {username, password} )
+    return response;
   }
 
 
@@ -67,6 +70,7 @@ export const Provider = (props) => {
           user = data
           user.password = password
           setAuthUser(user);
+          Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1})
         })
     }
     return response;
@@ -81,7 +85,7 @@ export const Provider = (props) => {
   //Sign Out function
   const signOut = () => {
     setAuthUser(null);
-
+    Cookies.remove('authenticatedUser');
   };
 
   //Delete course//

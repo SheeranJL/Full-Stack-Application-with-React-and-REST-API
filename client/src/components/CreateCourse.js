@@ -54,26 +54,6 @@ const CreateCourse = () => {
       })
   }
 
-  console.log(errors)
-  // const handleSubmit = async(e) => {
-  //   e.preventDefault();
-  //   let body = {
-  //     title: title,
-  //     description: desc,
-  //     estimatedTime: time,
-  //     materialsNeeded: materials
-  //   }
-  //   await actions.createCourse(body, actions.authUser.emailAddress, actions.authUser.password);
-  //   setTimeout(() => routeChange(), 500);
-  // }
-
-  // <div className="validation--errors">
-  //     <h3>Validation Errors</h3>
-  //     <ul>
-  //         <li>Please provide a value for "Title"</li>
-  //         <li>Please provide a value for "Description"</li>
-  //     </ul>
-  // </div>
 
   return (
     <div className="wrap">
@@ -100,19 +80,19 @@ const CreateCourse = () => {
         <form onSubmit={handleSubmit}>
             <div className="main--flex">
                 <div>
-                    <label for="courseTitle">Course Title</label>
+                    <label htmlFor="courseTitle">Course Title</label>
                     <input onChange={handleChange} id="courseTitle" name="courseTitle" type='text' value={title} />
 
                     <p>By {actions.authUser.firstName} {actions.authUser.lastName}</p>
 
-                    <label for="courseDescription">Course Description</label>
+                    <label htmlFor="courseDescription">Course Description</label>
                     <textarea onChange={handleChange} id="courseDescription" name="courseDescription" value={desc}></textarea>
                 </div>
                 <div>
-                    <label for="estimatedTime">Estimated Time</label>
+                    <label htmlFor="estimatedTime">Estimated Time</label>
                     <input onChange={handleChange} id="estimatedTime" name="estimatedTime" type="text" value={time} />
 
-                    <label for="materialsNeeded">Materials Needed</label>
+                    <label htmlFor="materialsNeeded">Materials Needed</label>
                     <textarea onChange={handleChange} type="text" id="materialsNeeded" name="materialsNeeded" value={materials} ></textarea>
                 </div>
             </div>

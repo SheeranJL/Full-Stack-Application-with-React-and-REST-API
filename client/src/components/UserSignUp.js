@@ -1,10 +1,12 @@
-import React, {useState, useContext} from 'react';
+//User sign up component//
+import {useState, useContext} from 'react';
 import {appContext} from '../Context';
 import {Link, useHistory} from 'react-router-dom';
 import ValidationError from './ValidationError';
 
 const UserSignUp = () => {
 
+  //setting local state for sign-up field values//
   let [firstName, setFirstName] = useState('');
   let [lastName, setLastName] = useState('');
   let [email, setEmail] = useState('');
@@ -14,6 +16,7 @@ const UserSignUp = () => {
   const {actions} = useContext(appContext);
   const history = useHistory();
 
+  //Update local state when a user types into fields//
   function handleChange(e) {
     if (e.target.name === 'firstName') {
       setFirstName(e.target.value);
@@ -26,6 +29,9 @@ const UserSignUp = () => {
     }
   }
 
+  //Upon submit, we will create a user object which will be used within the signup API if user provided all required fields//
+  //If the user does not provide all information, errors will be held within the error state and displayed as a list//
+  //otherwise, if the sign-up is successful, the user will be redirected to the home screen and they can sign in//
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -49,7 +55,6 @@ const UserSignUp = () => {
       .catch(error => console.log(error))
   }
 
-
   function routeChange() {
     history.push('/')
   }
@@ -57,14 +62,11 @@ const UserSignUp = () => {
   return (
     <div className="form--centered">
         <h2>Sign Up</h2>
-
         {
           (errors.length !== 0)
           ? errors.map((error, index) => <ValidationError key={index} data={errors}/>)
           : <h1> </h1>
         }
-
-
         <form onSubmit={handleSubmit}>
             <label htmlFor="firstName">First Name</label>
             <input onChange={handleChange} id="firstName" name="firstName" type="text" value={firstName} />

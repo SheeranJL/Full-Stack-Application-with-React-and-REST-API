@@ -12,14 +12,12 @@ const ValidationError = (props) => {
         <ul>
         {
           errors[0][0].errors.map((error, index) => (
-            <li>{`${errors[0][0].errors[index]}`}</li>
+            <li key={index}>{`${errors[0][0].errors[index]}`}</li>
           ))
         }
         </ul>
     </div>
   )
-
-
 }
 
 export default ValidationError;

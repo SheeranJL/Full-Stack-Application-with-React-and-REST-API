@@ -23,6 +23,11 @@ a {
     color: #939;
     text-decoration: none;
 }
+
+ul {
+  padding-left: 0;
+}
+
 .wrap {
     max-width: 1250px;
     margin: 0 auto;
@@ -46,6 +51,11 @@ header {
 header li {
     font-size: .8rem;
 }
+
+nav {
+  display: flex;
+}
+
 header nav a {
     color: #dbd;
 }
@@ -110,6 +120,7 @@ header nav a:hover {
     font-weight: 300;
     margin: 0 0 1.5rem 1rem;
     line-height: 1.5;
+    padding-left: 0;
 }
 .actions--bar {
     background: #e9e5f0;

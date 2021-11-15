@@ -1,15 +1,18 @@
-import React, {useState, useContext, useEffect} from 'react';
+//Update Course component//
+import {useState, useContext, useEffect} from 'react';
 import {appContext} from '../Context';
 import {Link, useHistory} from 'react-router-dom';
 
 const UpdateCourse = (props) => {
 
   let identifier = props.match.params.id;
+  const {actions} = useContext(appContext);
+
+  //Setting local state//
   const [course, setCourse] = useState({});
   const [loading, setLoading] = useState(true);
-  const {actions} = useContext(appContext);
+  const [errors, setErrors] = useState([]);
   const user = actions.authUser;
-
   const [id, setId] = useState(null);
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
@@ -21,6 +24,9 @@ const UpdateCourse = (props) => {
     history.push(`/courses/${id}`);
   }
 
+
+  //When the page loads, the useEffect hook will render the selected course//
+  //It will render the course details in the respective text/input boxes//
   useEffect( () => {
     const getCourse = async () => {
       await actions.getCourse(identifier)
@@ -49,6 +55,7 @@ const UpdateCourse = (props) => {
       getCourse();
   }, [])
 
+  //When a user inputs text with the input/text fields, this function will update local state to hold these changes//
   const onChange = (e) => {
     e.preventDefault();
     if (e.target.name === 'courseTitle') {
@@ -62,6 +69,8 @@ const UpdateCourse = (props) => {
     }
   }
 
+  //When the form is submitted, this function will create a body object containing all of the new text data//
+  //After successful submission, the course will be updated and the user will be redirected to the course detail screen//
   const handleSubmit = async(e) => {
     e.preventDefault();
     let body = {
@@ -70,12 +79,20 @@ const UpdateCourse = (props) => {
       estimatedTime: time,
       materialsNeeded: materials
     };
-    await actions.updateCourse(identifier, body, actions.authUser.emailAddress, actions.authUser.password)
-    setTimeout(() => {
-      history.push(`/courses/${identifier}`)
-    }, 500);
-  }
 
+    const response = actions.updateCourse(identifier, body, actions.authUser.emailAddress, actions.authUser.password)
+      .then(response => {
+        if (response.status === 204) {
+          setTimeout(() => {
+            history.push(`/courses/${identifier}`)
+          }, 500)
+        } else if (response.status === 400) {
+          response.json().then(response => {
+            setErrors(response);
+          })
+        }
+      })
+  }
 
   return (
     <main>
@@ -84,23 +101,33 @@ const UpdateCourse = (props) => {
       ? <h1>Loading...</h1>
       : (
         <div className="wrap">
+        {
+          (errors.length !== 0)
+          ? <div className="validation--errors">
+            <h3>Validation Errors</h3>
+              <ul>
+                {errors.message}
+              </ul>
+          </div>
+          : null
+        }
           <h2>Update Course</h2>
           <form onSubmit={handleSubmit}>
               <div className="main--flex">
                   <div>
-                      <label for="courseTitle">Course Title</label>
+                      <label htmlFor="courseTitle">Course Title</label>
                       <input onChange={onChange} id="courseTitle" name="courseTitle" type="text" value={title} />
 
                       <p></p>
 
-                      <label for="courseDescription">Course Description</label>
+                      <label htmlFor="courseDescription">Course Description</label>
                       <textarea onChange={onChange} id="courseDescription" name="courseDescription" value={desc}></textarea>
                   </div>
                   <div>
-                      <label for="estimatedTime">Estimated Time</label>
+                      <label htmlFor="estimatedTime">Estimated Time</label>
                       <input onChange={onChange} id="estimatedTime" name="estimatedTime" type="text" value={time} />
 
-                      <label for="materialsNeeded">Materials Needed</label>
+                      <label htmlFor="materialsNeeded">Materials Needed</label>
                       <textarea onChange={onChange} id="materialsNeeded" name="materialsNeeded" value={materials}></textarea>
                   </div>
               </div>
@@ -112,8 +139,6 @@ const UpdateCourse = (props) => {
     }
     </main>
   )
-
-
 }
 
 

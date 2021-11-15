@@ -3,6 +3,7 @@ import {appContext} from '../Context';
 import {Link, useHistory} from 'react-router-dom';
 import CourseComponent from './DetailCourse';
 import AdminButtons from './AdminButtons';
+import ReactMarkdown from 'react-markdown';
 
 const CourseDetail = (props) => {
 
@@ -19,13 +20,20 @@ const CourseDetail = (props) => {
   useEffect( () => {
     const getCourse = async () => {
       await actions.getCourse(id)
-        .then(response => response.json())
-        .then(data => setCourse(data.course))
-        .finally(() => setLoading(false))
+        .then(response => {
+          if (response.status === 200) {
+            response.json()
+              .then(data => setCourse(data.course))
+              .finally(() => setLoading(false))
+          } else if (response.status === 401) {
+            history.push('/notfound')
+          } else {
+            history.push('/error')
+          }
+        })
     }
     getCourse();
   }, []);
-
 
   //Function to check whether the course ID is the same as the user ID therefore granting conditional access to admin buttons//
   function checkAuthUser() {
@@ -44,17 +52,6 @@ const CourseDetail = (props) => {
     return false;
   }
 }
-
-
-  async function splitString(string) {
-    if (course.materialsNeeded) {
-      let materials = string.split(', ')
-      materials.forEach(material => materialsList.push(material))
-    } else {
-      materialsList.push('Nothing! Just your brilliant mind!')
-    }
-  }
-  splitString(course.materialsNeeded)
 
 
   //Delete course function//
@@ -86,13 +83,13 @@ const CourseDetail = (props) => {
                       </div>
                   </div>
                 <h2>Course Detail</h2>
-                <p>By {course.Enrolled.firstName} {course.Enrolled.lastName}</p>
+
                 <div className="main--flex">
                   <div>
                       <h3 className="course--detail--title">Course</h3>
                       <h4 className="course--name">{course.title}</h4>
-
-                      <p>{course.description}</p>
+                      <p>By {course.Enrolled.firstName} {course.Enrolled.lastName}</p>
+                      <ReactMarkdown>{course.description}</ReactMarkdown>
                       <p></p>
                   </div>
                   <div>
@@ -100,9 +97,7 @@ const CourseDetail = (props) => {
                       <p>{course.estimatedTime || 'No time provided'}</p>
                       <h3 className="course--detail--title">Materials Needed</h3>
                       <ul className="course--detail--list">
-                          {materialsList.map((item, index) => (
-                            <li key={index}>{item}</li>
-                          ))}
+                          <ReactMarkdown>{course.materialsNeeded || '* Nothing!'}</ReactMarkdown>
                       </ul>
                   </div>
               </div>

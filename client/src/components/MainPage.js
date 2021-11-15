@@ -1,13 +1,16 @@
-import React, {useState, useEffect, useContext} from 'react';
+//Main Page (index) component//
+import {useState, useEffect, useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {appContext} from '../Context';
 import Course from './Course'
 
 const MainPage = () => {
 
+
   const [courses, setCourses] = useState([]);
   const {actions} = useContext(appContext);
 
+  //When the app loads, the useEffect hook will execute and load all courses via getCourses API function//
   useEffect( () => {
     const getCourses = async () => {
       await actions.getCourses()
