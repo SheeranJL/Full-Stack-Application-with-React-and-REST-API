@@ -1,12 +1,13 @@
 //Main Page (index) component//
 import {useState, useEffect, useContext} from 'react';
+import {useHistory} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {appContext} from '../Context';
 import Course from './Course'
 
 const MainPage = () => {
 
-
+  const history = useHistory();
   const [courses, setCourses] = useState([]);
   const {actions} = useContext(appContext);
 
@@ -16,7 +17,9 @@ const MainPage = () => {
       await actions.getCourses()
         .then(response => response.json())
         .then(data => setCourses(data))
-        .then(console.log)
+        .catch(error => {
+          history.push('/error')
+        })
     }
     getCourses();
   }, [])

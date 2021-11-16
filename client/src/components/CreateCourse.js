@@ -57,6 +57,9 @@ const CreateCourse = () => {
             })
         }
       })
+      .catch(error => {
+        history.push('/error')
+      })
   }
 
 

@@ -52,7 +52,9 @@ const UserSignUp = () => {
           history.push('/error');
         }
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        history.push('/error')
+      })
   }
 
   function routeChange() {
