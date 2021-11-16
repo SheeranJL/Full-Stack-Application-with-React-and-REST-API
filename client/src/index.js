@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './global.css';
 // import './reset.css'
 import './index.css'
-import {Provider} from './Context';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {Provider} from './Context';
 
 ReactDOM.render(
   <React.StrictMode>
