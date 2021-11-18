@@ -8,11 +8,6 @@ const Header = () => {
   //obtaining all functions from global app context//
   const {actions} = useContext(appContext);
   const authUser = actions.authUser;
-  const signOut = actions.signOut;
-
-  const handleSignOut = () => {
-    actions.signOut();
-  }
 
   return (
     <header>
@@ -23,7 +18,7 @@ const Header = () => {
                 authUser
                 ?<ul className="header--signedout">
                   <h1>{`Welcome ${authUser.firstName} ${authUser.lastName}`}</h1>
-                    <Link to="/#" onClick={handleSignOut}>Sign Out</Link>
+                    <Link to="/signout/" >Sign Out</Link>
                 </ul>
 
                 :<ul className="header--signedout">

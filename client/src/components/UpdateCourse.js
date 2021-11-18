@@ -1,7 +1,7 @@
 //Update Course component//
 import {useState, useContext, useEffect} from 'react';
 import {appContext} from '../Context';
-import {Link, useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 const UpdateCourse = (props) => {
 
@@ -12,7 +12,6 @@ const UpdateCourse = (props) => {
   const [course, setCourse] = useState({});
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
-  const user = actions.authUser;
   const [id, setId] = useState(null);
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
@@ -53,7 +52,7 @@ const UpdateCourse = (props) => {
       )
       }
       getCourse();
-  }, [])
+  }, [actions, history, identifier])
 
   //When a user inputs text with the input/text fields, this function will update local state to hold these changes//
   const onChange = (e) => {
@@ -89,9 +88,11 @@ const UpdateCourse = (props) => {
         } else if (response.status === 400) {
           response.json().then(response => {
             setErrors(response);
+            console.log(course);
           })
         }
       })
+      console.log(response);
   }
 
   return (

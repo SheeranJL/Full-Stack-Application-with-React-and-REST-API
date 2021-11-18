@@ -1,11 +1,8 @@
 //Validation component//
-import {useState, useEffect} from 'react';
 
 const ValidationError = (props) => {
 
   const errors = [props.data];
-
-  const errorLength = props.data.length
 
   return (
     <div className="validation--errors">

@@ -22,7 +22,7 @@ const MainPage = () => {
         })
     }
     getCourses();
-  }, [])
+  }, [history, actions])
 
 
   return (

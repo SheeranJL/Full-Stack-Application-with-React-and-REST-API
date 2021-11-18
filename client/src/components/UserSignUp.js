@@ -45,6 +45,9 @@ const UserSignUp = () => {
     actions.signUp(user)
       .then(response => {
         if (response.status === 201) {
+          const response = actions.signIn(user.emailAddress, user.password)
+          console.log(history)
+          console.log(response)
           history.push('/');
         } else if (response.status === 400) {
           response.json().then(data => setErrors([data]))

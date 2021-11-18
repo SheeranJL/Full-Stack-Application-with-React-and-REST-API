@@ -1,10 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {appContext} from '../Context';
 import {useHistory} from 'react-router-dom';
-import ValidationError from './ValidationError';
+
 
 const CreateCourse = () => {
-
   //setting up local context//
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');

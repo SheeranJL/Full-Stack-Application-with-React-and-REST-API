@@ -1,14 +1,13 @@
-import React, {useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 //Importing components//
 import Header from './components/Header';
 import CourseDetail from './components/CourseDetail';
-import Course from './components/Course';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
+import UserSignOut from './components/UserSignOut';
 import NotFound from './components/NotFound';
 import MainPage from './components/MainPage';
 import ErrorPage from './components/Error';
@@ -16,7 +15,7 @@ import PrivateRoute from './PrivateRoute';
 import Forbidden from './components/Forbidden';
 
 //Setting up different app routes//
-export default () => (
+const routes = () => (
   <Router>
       <Header />
       <main>
@@ -30,8 +29,11 @@ export default () => (
           <Route path="/notfound" component={NotFound} />
           <Route path="/error" component={ErrorPage} />
           <Route path="/forbidden" component={Forbidden} />
+          <Route path="/signout" component={UserSignOut} />
           <Route component={NotFound} />
         </Switch>
       </main>
   </Router>
 )
+
+export default routes;

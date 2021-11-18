@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {appContext} from '../Context';
 import {Link, useHistory} from 'react-router-dom';
-import CourseComponent from './DetailCourse';
+
 import AdminButtons from './AdminButtons';
 import ReactMarkdown from 'react-markdown';
 
@@ -10,15 +10,14 @@ const CourseDetail = (props) => {
   //Setting local context//
   let [course, setCourse] = useState([]);
   let [loading, setLoading] = useState(true);
-  let [materials, setMaterials] = useState([]);
-  let [user, setUser] = ('');
+
 
   //obtaining functions from app context//
-  const {actions, authUser} = useContext(appContext)
+  const {actions} = useContext(appContext)
   const history = useHistory();
 
   let id = props.match.params.id
-  let materialsList = [];
+
 
   useEffect( () => {
     const getCourse = async () => {
@@ -36,7 +35,7 @@ const CourseDetail = (props) => {
         })
     }
     getCourse();
-  }, []);
+  }, [actions, history, id]);
 
   //Function to check whether the course ID is the same as the user ID therefore granting conditional access to admin buttons//
   function checkAuthUser() {

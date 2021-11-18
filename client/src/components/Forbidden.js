@@ -14,7 +14,7 @@ const Forbidden = () => {
     <div class="wrap">
         <h2>Forbidden</h2>
         <p>Oh oh! You can't access this page.</p>
-        <button className="button button-secondary">Return to home</button>
+        <button onClick={routeChange} className="button button-secondary">Return to home</button>
     </div>
   )
 }

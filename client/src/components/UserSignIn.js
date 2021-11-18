@@ -8,7 +8,6 @@ const UserSignIn = () => {
   let [email, setEmail] = useState('');
   let [password, setPassword] = useState('');
   let [fail, setFail] = useState(false);
-  let [attempts, setAttempts] = useState(5)
   const {actions} = useContext(appContext);
 
   //using history hook to be used when clicking cancel button//
